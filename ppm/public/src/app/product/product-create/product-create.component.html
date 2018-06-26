@@ -1,0 +1,54 @@
+<div class="btn-group" role="group" aria-label="Basic example">
+    <button type="button" class="button is-light" [routerLink]="['/']">Home</button>
+    <button type="button" class="button is-light" [routerLink]="['/products']">Product List</button>
+</div>
+<br><br>
+<form (submit)="addProduct()" #formData="ngForm">
+  <div class="form-group row box0"> 
+    <fieldset>
+          <legend>Edit Product</legend>
+    <div class="col-sm-12" >
+        <label class="col-form-label">Title:</label>
+        <input 
+        type="text" 
+        class="form-control" 
+        name="title" 
+        required
+        minlength=2
+        [(ngModel)]="newProduct.title"
+        #title="ngModel"
+        />
+       <div *ngIf="!title.valid" class="red">*Title {{ newProduct.title }} must be at least 4 characters in length!</div>
+    </div>
+
+    <div class="col-sm-12">
+        <label class="col-form-label">Price:</label>
+          <input 
+          type="text" 
+          class="form-control" 
+          name="newProduct.price" 
+          [(ngModel)]="newProduct.price" 
+          #price="ngModel"
+          />
+          <!-- <div *ngIf="!title.valid" class="red">*Price {{ newProduct.price }} must be at least 4 characters in length!</div> -->
+    </div>
+
+    <div class="col-sm-12">
+        <label class="col-form-label">Image Url:</label>
+          <input 
+          type="text" 
+          class="form-control" 
+          name="newProduct.imagePath" 
+          [(ngModel)]="newProduct.imagePath" 
+          #imagePath="ngModel"
+          />
+          <!-- <div *ngIf="!title.valid" class="red">*Price {{ newProduct.price }} must be at least 4 characters in length!</div> -->
+    </div>
+
+    <button class="button is-success" type="submit" [disabled]="formData.invalid">Create</button>
+    <br>
+  </fieldset>
+  </div>
+ 
+</form>
+

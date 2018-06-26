@@ -1,0 +1,39 @@
+<div class="btn-group" role="group" aria-label="Basic example">
+    <button type="button" class="button is-light" [routerLink]="['/']">Home</button>
+    <button type="button" class="button is-light" [routerLink]="['/products/new']">Product Creation</button>
+</div> 
+
+<div class="box">
+    <article class="media">
+
+      <div class="media-content">
+        <div class="content">
+          <strong>Product List</strong> 
+          <br>
+          <div id="scroll">
+              <table class="table table-hover" align="left">
+                <tbody>
+                  <tr *ngFor="let product of products" class="d-flex">
+                    <td>
+                      <figure class="media-left">
+                          <p class="image is-128x128">
+                            <img src="{{product['imagePath']}}">
+                          </p>
+                        </figure>
+                    </td>
+                    <td class="col-6">{{ product['title'] }}</td>
+                    <td class="col-4">{{ product['price'] | number : '1.2-2' }}</td>
+                    <td class="col-3"><button mat-button [routerLink]="['/products/edit', product['_id'] ]" class="button is-warning">Edit</button></td>
+                    <td class="col-3"><button mat-button (click)="deleteProduct(product['_id'])" class="button is-danger">Delete</button></td>
+                    <!-- <td class="col-3"><button mat-button (click)="openDialog(player)" class="button is-danger">Delete</button></td> -->
+                  </tr>
+                </tbody>
+              </table> 
+            </div>
+              
+    
+        </div>
+  
+      </div>
+    </article>
+  </div>

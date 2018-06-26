@@ -1,0 +1,56 @@
+<form (submit)="editProduct(product)" #formData="ngForm" id="editForm">
+    <div class="box0"> 
+
+      <fieldset>
+        <legend>Edit Product</legend>
+        <div class="form-group row">
+          <label for="title">Title</label>
+          <input 
+          class="form-control"
+          type="text" 
+          name="title" 
+          [(ngModel)]="product.title"
+          #title="ngModel"
+          />
+        </div>
+        <div *ngIf="!title.valid" class="purple">Product title must be at least four characters!</div>
+  
+        <div class="form-group row">
+          <label for="price">Price</label>
+          <input 
+          class="form-control"
+          type="number" 
+          name="price" 
+          [(ngModel)]="product.price"
+          #price="ngModel"
+          />
+        </div>
+    
+        <div class="form-group row">
+            <label for="imagePath">Image Url</label>
+            <input 
+            class="form-control"
+            type="text" 
+            name="imagePath" 
+            [(ngModel)]="product.imagePath"
+            #imagePath="ngModel"
+            />
+          </div>
+
+        <button type="button" class="button is-danger" (click)="deleteProduct(product['_id'])">Delete</button>
+        <button type="submit" class="button is-link " [disabled]="formData.invalid">Update</button>
+  {{ error | json }}
+        <div class="errors">
+          <p *ngIf="errors.title" >  {{ errors.title.message }} </p>
+          <p *ngIf="errors.price"> {{ errors.price.message }} </p>        
+        </div>
+   
+        <div class="blue">
+            <p *ngIf="errors.success" >Successfully saving product</p>  
+        </div>
+  
+      </fieldset>
+  
+    </div>
+  
+  </form>
