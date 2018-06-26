@@ -17,8 +17,8 @@ const ProductSchema = new Schema({
         minlength: 3,
         trim: true
     },
-    imagePath: {
-        type: String,
+    qtd: {
+        type: Number,
         trim: true
     },
     }, { timestamps: true }, 
