@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../product.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-product-edit',
@@ -11,7 +12,8 @@ export class ProductEditComponent implements OnInit {
   product: any;
   produtcSave: any;
   errors: any = {};
-
+  form: FormGroup;
+  
   constructor(
     private _productService: ProductService,
     private _router: Router,
@@ -21,10 +23,8 @@ export class ProductEditComponent implements OnInit {
   ngOnInit() {
     this.product = { name: "", qty: "",  price: "" };
     this.getProduct();
-    this.produtcSave = this.product;
-    console.log("saved prod", this.produtcSave);
   }
-å
+
   getProduct(){
     this._route.paramMap.subscribe(params => {
       this._productService.getProductById(params.get('id'), (res) => {
@@ -50,10 +50,8 @@ export class ProductEditComponent implements OnInit {
 
   reset() {
     this.getProduct();
-    // this.product = this.produtcSave;
     console.log('product in reset edit:', this.product);
     this._router.navigate(['/products/edit/'] + this.product['_id']);
-    // this._router.navigate(['/products/edit/'] + this.product['_id']);
     }
 
 }

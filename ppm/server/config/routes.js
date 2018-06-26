@@ -10,18 +10,12 @@ module.exports = function(app){
         product.list(req, res)})
     .get('/products/:id', (req, res) => {
         product.getProductById(req, res)})
-    // .get('/products/nId', (req, res) => {
-    //     product.getLast(req, res)})
     .post('/products/new', (req, res) => {
         product.new(req, res)})
     .put('/products/edit', (req, res) => {
         product.update(req, res)})
     .delete('/delete/:id', (req, res) => {
         product.destroy(req, res)})
-    // .get('/reviews/:id', (req, res) => {
-    //     restaurant.getReviews(req, res)})
-    // .post('/write/:id', (req, res) => {
-    //     restaurant.write(req, res)})
     .all("*", (req, res) => { 
         res.sendFile(path.resolve('../ppm/public/dist/index.html'))})
 }

@@ -1,16 +1,14 @@
 <form (submit)="editProduct(product)" #formData="ngForm" id="editForm">
     <div class="box"> 
-
-        <!-- {{ errors | json }} -->
+        <div class="title is-4">Update Product</div>
         <div class="errors">
           <p *ngIf="errors.name" >  {{ errors.name.message }} </p>
           <p *ngIf="errors.qty"> {{ errors.qty.message }} </p>        
           <p *ngIf="errors.price"> {{ errors.price.message }} </p>        
         </div>
-
-      <fieldset>
-        <legend>Update Product</legend>
-        <div class="form-group row">
+      <!-- <fieldset> -->
+      <div class="field">
+        <div class="control">
           <label for="name">Name</label>
           <input 
           class="form-control"
@@ -20,9 +18,9 @@
           #name="ngModel"
           />
         </div>
-        <!-- <div *ngIf="!name.valid" class="purple">Product title must be at least four characters!</div> -->
+        <div *ngIf="!name.valid" class="purple">Product Name must be at least three characters!</div>
         
-        <div class="form-group row">
+        <div class="control">
             <label for="qty">Qty</label>
             <input 
             class="form-control"
@@ -32,8 +30,9 @@
             #qty="ngModel"
             />
           </div>
+          <div *ngIf="!qty.valid" class="purple">Product Qty must be greater than or equal 0!</div>
 
-        <div class="form-group row">
+          <div class="control">
           <label for="price">Price</label>
           <input 
           class="form-control"
@@ -43,15 +42,13 @@
           #price="ngModel"
           />
         </div>
+        <div *ngIf="!qty.valid" class="purple">Product Price must be greater than or equal 0!</div>
+      <!-- </fieldset> -->
+      </div>
 
-        <button type="button" class="button is-light" (click)="reset()" >RESET</button>
-        <button type="button" class="button is-success" (click)="editProduct(product)" [disabled]="formData.invalid">UPDATE</button>
-        <!-- <button class="button is-light" [routerLink]="['/products']">RESET</button> -->
-        <!-- <button type="submit" class="button is-success" [disabled]="formData.invalid">UPDATE</button> -->
-      
-  
-      </fieldset>
-  
     </div>
   
+    <button type="button" class="button is-light" (click)="reset()" >RESET</button>
+    <button type="button" class="button is-success" (click)="editProduct(product)" [disabled]="formData.invalid">UPDATE</button>
+
   </form>

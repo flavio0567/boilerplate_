@@ -1,16 +1,17 @@
 
 <form (submit)="addProduct(newProduct)" #formData="ngForm">
-  <div class="form-group row box0"> 
-    <fieldset>      
-    <legend>New Product</legend>
-    <!-- {{ errors | json }} -->
+  <div class="box"> 
+    <!-- <fieldset>       -->
+    <div class="title is-4">New Product</div>
+
     <div *ngIf="errors">  
       <p *ngIf="errors.name" >  {{ errors['name'].message }} </p>
       <p *ngIf="errors.qty"> {{ errors.qty.message }} </p>        
       <p *ngIf="errors.price"> {{ errors.price.message }} </p>        
     </div>
+    <div class="field">
+        <div class="control">
 
-    <div class="col-sm-12" >
         <label class="col-form-label">Name:</label>
         <input 
         type="text" 
@@ -23,6 +24,7 @@
         />
        <div *ngIf="!name.valid" class="is-small">*Product Name {{ newProduct.name }} must be at least 3 characters in length!</div>
     </div>
+      </div>
 
     <div class="col-sm-12">
         <label class="col-form-label">Qty:</label>
@@ -51,7 +53,7 @@
     </div>
 
     <br>
-  </fieldset>
+  <!-- </fieldset> -->
   </div>
 
   <button class="button is-light" [routerLink]="['/products']">RESET</button>
