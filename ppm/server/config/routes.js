@@ -10,6 +10,8 @@ module.exports = function(app){
         product.list(req, res)})
     .get('/products/:id', (req, res) => {
         product.getProductById(req, res)})
+    // .get('/products/nId', (req, res) => {
+    //     product.getLast(req, res)})
     .post('/products/new', (req, res) => {
         product.new(req, res)})
     .put('/products/edit', (req, res) => {

@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class ProductEditComponent implements OnInit {
   product: any;
-
+  produtcSave: any;
   errors: any = {};
 
   constructor(
@@ -19,8 +19,10 @@ export class ProductEditComponent implements OnInit {
    ) { }
 
   ngOnInit() {
-    this.product = { title: "", price: "", imagePath: "" };
+    this.product = { name: "", qty: "",  price: "" };
     this.getProduct();
+    this.produtcSave = this.product;
+    console.log("saved prod", this.produtcSave);
   }
 å
   getProduct(){
@@ -32,6 +34,7 @@ export class ProductEditComponent implements OnInit {
   }
 
   editProduct(product) {
+    console.log('product in edit:', product);
     this._productService.editProduct(product, (res) => { 
       if(res.errors) {
         console.log('Something went wrong when saving product');
@@ -45,11 +48,12 @@ export class ProductEditComponent implements OnInit {
     })
   }
 
-  deleteProduct(id) {
-    this._productService.deleteProduct((id), (res) => {
-      console.log('This called delete product!');
-      this._router.navigate(['/products']);
-    });
-  }
+  reset() {
+    this.getProduct();
+    // this.product = this.produtcSave;
+    console.log('product in reset edit:', this.product);
+    this._router.navigate(['/products/edit/'] + this.product['_id']);
+    // this._router.navigate(['/products/edit/'] + this.product['_id']);
+    }
 
 }

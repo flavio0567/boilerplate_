@@ -1,5 +1,6 @@
 export class Product {
-    title: String;
+    name: String;
+    qty: Number;
     price: Number;
-    imagePath: String;
+    count: Number;
 }

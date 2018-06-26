@@ -15,8 +15,15 @@ module.exports = {
             .catch(error => console.log(error));
     },
     new: (req, res) => {
-        console.log('product:', req.body);
-        let product = new Product(req.body.product);
+        var shortid = require('shortid');
+        // console.log('shortid', shortid.generate());
+        console.log('product in new:', req.body.product);
+        let product = new Product({
+              name: req.body.product.name,
+              qty: req.body.product.qty,
+              price: req.body.product.price,
+             }
+            );
         product.save(function(err, result){
             if(err) {
                 console.log('Something went wrong when saving');
@@ -30,7 +37,6 @@ module.exports = {
     getProductById: function(req, res) {
         console.log('getProductById: ', req.params.id);
         Product.findOne({_id: req.params.id})
-        // .populate('reviews')
         .then(product => res.json(product))
         .catch(error => console.log(error));
     },
@@ -42,9 +48,9 @@ module.exports = {
             if (err) {
                 console.log('Something went wrong in update when find product', err);
             } else { 
-                eProduct.title = req.body.title;
-                eProduct.price = req.body.price;
-                eProduct.imagePath = req.body.imagePath;      
+                eProduct.name = req.body.name;
+                eProduct.qty = req.body.qty;
+                eProduct.price = req.body.price;  
                 eProduct.save(function(err, result){
                     if(err) {
                         console.log('Something went wrong when saving');
@@ -58,6 +64,7 @@ module.exports = {
         })
     },
     destroy: (req, res) => {
+        console.log('req.params.id', req.params.id)
         Product.findByIdAndRemove({_id: req.params.id})
             .then(product => res.json(product))
             .catch(error => console.log(error));

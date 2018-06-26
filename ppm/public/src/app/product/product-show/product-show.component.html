@@ -1,0 +1,49 @@
+<form (submit)="deleteProduct(product._id)" #formData="ngForm" id="showForm">
+  <div class="box">
+    <article class="media">
+
+      <div class="media-content">
+        <div class="content">
+          <strong>Product List</strong> 
+          <br>
+
+          {{ error | json }}
+          <div class="errors">
+            <p *ngIf="errors.title" >  {{ errors.name.message }} </p>     
+          </div>
+
+          <div class="field">
+            <label class="label level-left">Name</label>
+            <div  class="level-item">
+              <p> {{ product.name}} </p>
+            </div>
+          </div>
+          
+          <div class="field">
+            <label class="label  level-left">Qty</label>
+            <div  class="level-item">
+              <p> {{ product.qty}} </p>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Price</label>
+            <div  class="level-item">
+              <p> {{ product.price}} </p>
+            </div>
+          </div>        
+    
+          <button type="button" class="button is-light" [routerLink]="['/products']">Back</button>
+          <button type="submit" class="button is-danger" [disabled]="product.qty > 0">Delete</button>
+
+        </div>
+  
+      </div>
+  
+     
+    </article>
+
+
+
+</div>
+</form>

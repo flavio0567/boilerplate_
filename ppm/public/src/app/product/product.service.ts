@@ -4,16 +4,8 @@ import { Product} from './product';
 
 @Injectable()
 export class ProductService {
-  // user;
-  // player: Player;
 
   constructor(private _http: Http) { }
-
-  // login(user, callback) {
-  //   this.user = user;
-  //   console.log('LOGIN success: ', this.user);
-  //   callback(this.user);
-  // }
 
   getProductsList(products) {
     this._http.get('/products/list').subscribe(
@@ -74,5 +66,18 @@ export class ProductService {
       }
     );
   }
+
+  getLast(callback) {
+    this._http.get('/products/nId').subscribe(
+      (res) => {
+        console.log('SUCCESS getting last product: ', res.json());
+        callback(res.json());
+      },
+      (err) => {
+        console.log('ERROR getting ProductByID: ', err);
+      }
+    );
+  }
+
 
 }

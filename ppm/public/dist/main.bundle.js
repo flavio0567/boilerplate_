@@ -35,13 +35,8 @@ var product_list_component_1 = __webpack_require__("./src/app/product/product-li
 var product_create_component_1 = __webpack_require__("./src/app/product/product-create/product-create.component.ts");
 var product_edit_component_1 = __webpack_require__("./src/app/product/product-edit/product-edit.component.ts");
 var page_not_found_component_1 = __webpack_require__("./src/app/page-not-found/page-not-found.component.ts");
-var product_home_component_1 = __webpack_require__("./src/app/product/product-home/product-home.component.ts");
+var product_show_component_1 = __webpack_require__("./src/app/product/product-show/product-show.component.ts");
 var routes = [
-    {
-        path: '',
-        component: product_home_component_1.ProductHomeComponent,
-        pathMatch: 'full'
-    },
     {
         path: 'products',
         component: product_list_component_1.ProductListComponent,
@@ -55,6 +50,11 @@ var routes = [
     {
         path: 'products/edit/:id',
         component: product_edit_component_1.ProductEditComponent,
+        pathMatch: 'full'
+    },
+    {
+        path: 'products/:id',
+        component: product_show_component_1.ProductShowComponent,
         pathMatch: 'full'
     },
     {
@@ -112,7 +112,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var AppComponent = /** @class */ (function () {
     function AppComponent() {
-        this.title = 'Project Product Management';
+        this.title = 'Commerce Manager';
     }
     AppComponent = __decorate([
         core_1.Component({
@@ -144,7 +144,6 @@ var platform_browser_1 = __webpack_require__("./node_modules/@angular/platform-b
 var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/esm5/http.js");
 var forms_1 = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
-// import { MatDialogModule } from '@angular/material';
 var app_routing_module_1 = __webpack_require__("./src/app/app-routing.module.ts");
 var app_component_1 = __webpack_require__("./src/app/app.component.ts");
 var product_list_component_1 = __webpack_require__("./src/app/product/product-list/product-list.component.ts");
@@ -153,7 +152,7 @@ var product_create_component_1 = __webpack_require__("./src/app/product/product-
 var product_home_component_1 = __webpack_require__("./src/app/product/product-home/product-home.component.ts");
 var page_not_found_component_1 = __webpack_require__("./src/app/page-not-found/page-not-found.component.ts");
 var product_service_1 = __webpack_require__("./src/app/product/product.service.ts");
-// import { Dialog } from './product/product-list/product-list.component';
+var product_show_component_1 = __webpack_require__("./src/app/product/product-show/product-show.component.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -165,7 +164,8 @@ var AppModule = /** @class */ (function () {
                 product_edit_component_1.ProductEditComponent,
                 product_create_component_1.ProductCreateComponent,
                 product_home_component_1.ProductHomeComponent,
-                page_not_found_component_1.PageNotFoundComponent
+                page_not_found_component_1.PageNotFoundComponent,
+                product_show_component_1.ProductShowComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -173,7 +173,6 @@ var AppModule = /** @class */ (function () {
                 forms_1.FormsModule,
                 app_routing_module_1.AppRoutingModule
             ],
-            // entryComponents:[Dialog],
             providers: [product_service_1.ProductService],
             bootstrap: [app_component_1.AppComponent]
         })
@@ -245,7 +244,7 @@ module.exports = ""
 /***/ "./src/app/product/product-create/product-create.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"btn-group\" role=\"group\" aria-label=\"Basic example\">\n    <button type=\"button\" class=\"button is-light\" [routerLink]=\"['/']\">Home</button>\n    <button type=\"button\" class=\"button is-light\" [routerLink]=\"['/products']\">Product List</button>\n</div>\n<br><br>\n<form (submit)=\"addProduct()\" #formData=\"ngForm\">\n  <div class=\"form-group row box0\"> \n\n    <div class=\"col-sm-12\" >\n        <label class=\"col-form-label\">Title:</label>\n        <input \n        type=\"text\" \n        class=\"form-control\" \n        name=\"title\" \n        required\n        minlength=2\n        [(ngModel)]=\"newProduct.title\"\n        #title=\"ngModel\"\n        />\n       <div *ngIf=\"!title.valid\" class=\"red\">*Title {{ newProduct.title }} must be at least 4 characters in length!</div>\n    </div>\n\n    <div class=\"col-sm-12\">\n        <label class=\"col-form-label\">Price:</label>\n          <input \n          type=\"text\" \n          class=\"form-control\" \n          name=\"newProduct.price\" \n          [(ngModel)]=\"newProduct.price\" \n          #price=\"ngModel\"\n          />\n          <!-- <div *ngIf=\"!title.valid\" class=\"red\">*Price {{ newProduct.price }} must be at least 4 characters in length!</div> -->\n    </div>\n\n    <div class=\"col-sm-12\">\n        <label class=\"col-form-label\">Image Url:</label>\n          <input \n          type=\"text\" \n          class=\"form-control\" \n          name=\"newProduct.imagePath\" \n          [(ngModel)]=\"newProduct.imagePath\" \n          #imagePath=\"ngModel\"\n          />\n          <!-- <div *ngIf=\"!title.valid\" class=\"red\">*Price {{ newProduct.price }} must be at least 4 characters in length!</div> -->\n    </div>\n\n    <button class=\"button is-success\" type=\"submit\" [disabled]=\"formData.invalid\">Create</button>\n    <br>\n\n  </div>\n \n</form>\n\n"
+module.exports = "\n<form (submit)=\"addProduct(newProduct)\" #formData=\"ngForm\">\n  <div class=\"form-group row box0\"> \n    <fieldset>      \n    <legend>New Product</legend>\n    <!-- {{ errors | json }} -->\n    <div *ngIf=\"errors\">  \n      <p *ngIf=\"errors.name\" >  {{ errors['name'].message }} </p>\n      <p *ngIf=\"errors.qty\"> {{ errors.qty.message }} </p>        \n      <p *ngIf=\"errors.price\"> {{ errors.price.message }} </p>        \n    </div>\n\n    <div class=\"col-sm-12\" >\n        <label class=\"col-form-label\">Name:</label>\n        <input \n        type=\"text\" \n        class=\"form-control\" \n        name=\"name\" \n        required\n        minlength=3\n        [(ngModel)]=\"newProduct.name\"\n        #name=\"ngModel\"\n        />\n       <div *ngIf=\"!name.valid\" class=\"is-small\">*Product Name {{ newProduct.name }} must be at least 3 characters in length!</div>\n    </div>\n\n    <div class=\"col-sm-12\">\n        <label class=\"col-form-label\">Qty:</label>\n          <input \n          type=\"text\" \n          required\n          class=\"form-control\" \n          name=\"newProduct.qty\" \n          [(ngModel)]=\"newProduct.qty\" \n          #qty=\"ngModel\"\n          />\n          <!-- <div *ngIf=\"!qty.valid\" class=\"red\">*Qty {{ newProduct.qty }} must be greater than or equal to 0!</div> -->\n    </div>\n\n    <div class=\"col-sm-12\">\n        <label class=\"col-form-label\">Price:</label>\n          <input \n          type=\"text\" \n          required\n          class=\"form-control\" \n          name=\"newProduct.price\" \n          [(ngModel)]=\"newProduct.price\" \n          #price=\"ngModel\"\n          />\n          <!-- <div *ngIf=\"!price.valid\" class=\"red\">*Price {{ newProduct.price }} must be greater than or equal to 0!</div> -->\n    </div>\n\n    <br>\n  </fieldset>\n  </div>\n\n  <button class=\"button is-light\" [routerLink]=\"['/products']\">RESET</button>\n  <button class=\"button is-success\" type=\"submit\" [disabled]=\"formData.invalid\">CREATE</button>\n \n</form>\n\n"
 
 /***/ }),
 
@@ -274,12 +273,20 @@ var ProductCreateComponent = /** @class */ (function () {
         this._route = _route;
     }
     ProductCreateComponent.prototype.ngOnInit = function () {
-        this.newProduct = { title: "", price: "", imagePath: "" };
+        this.newProduct = { name: "", qty: "", price: "", count: "" };
     };
-    ProductCreateComponent.prototype.addProduct = function () {
+    ProductCreateComponent.prototype.addProduct = function (product) {
         var _this = this;
+        console.log('product:', product);
         this._productService.newProduct(this.newProduct, function (res) {
-            _this._router.navigate(['/products', res]);
+            if (res.errors) {
+                console.log('Something went wrong when saving product', res.errors);
+                _this.errors = res.errors;
+                _this._router.navigate(['/products/new']);
+            }
+            else {
+                _this._router.navigate(['/products', res]);
+            }
         });
     };
     ;
@@ -310,7 +317,7 @@ module.exports = ""
 /***/ "./src/app/product/product-edit/product-edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form (submit)=\"editProduct(product)\" #formData=\"ngForm\" id=\"editForm\">\n    <div class=\"box0\"> \n\n      <fieldset>\n        <legend>Edit Product</legend>\n        <div class=\"form-group row\">\n          <label for=\"title\">Title</label>\n          <input \n          class=\"form-control\"\n          type=\"text\" \n          name=\"title\" \n          [(ngModel)]=\"product.title\"\n          #title=\"ngModel\"\n          />\n        </div>\n        <div *ngIf=\"!title.valid\" class=\"purple\">Product title must be at least four characters!</div>\n  \n        <div class=\"form-group row\">\n          <label for=\"price\">Price</label>\n          <input \n          class=\"form-control\"\n          type=\"number\" \n          name=\"price\" \n          [(ngModel)]=\"product.price\"\n          #price=\"ngModel\"\n          />\n        </div>\n    \n        <div class=\"form-group row\">\n            <label for=\"imagePath\">Image Url</label>\n            <input \n            class=\"form-control\"\n            type=\"text\" \n            name=\"imagePath\" \n            [(ngModel)]=\"product.imagePath\"\n            #imagePath=\"ngModel\"\n            />\n          </div>\n\n        <button type=\"button\" class=\"button is-danger\" (click)=\"deleteProduct(product['_id'])\">Delete</button>\n        <button type=\"submit\" class=\"button is-link \" [disabled]=\"formData.invalid\">Update</button>\n  {{ error | json }}\n        <div class=\"errors\">\n          <p *ngIf=\"errors.title\" >  {{ errors.title.message }} </p>\n          <p *ngIf=\"errors.price\"> {{ errors.price.message }} </p>        \n        </div>\n   \n        <div class=\"blue\">\n            <p *ngIf=\"errors.success\" >Successfully saving product</p>  \n        </div>\n  \n      </fieldset>\n  \n    </div>\n  \n  </form>"
+module.exports = "<form (submit)=\"editProduct(product)\" #formData=\"ngForm\" id=\"editForm\">\n    <div class=\"box\"> \n\n        <!-- {{ errors | json }} -->\n        <div class=\"errors\">\n          <p *ngIf=\"errors.name\" >  {{ errors.name.message }} </p>\n          <p *ngIf=\"errors.qty\"> {{ errors.qty.message }} </p>        \n          <p *ngIf=\"errors.price\"> {{ errors.price.message }} </p>        \n        </div>\n\n      <fieldset>\n        <legend>Update Product</legend>\n        <div class=\"form-group row\">\n          <label for=\"name\">Name</label>\n          <input \n          class=\"form-control\"\n          type=\"text\" \n          name=\"name\" \n          [(ngModel)]=\"product.name\"\n          #name=\"ngModel\"\n          />\n        </div>\n        <!-- <div *ngIf=\"!name.valid\" class=\"purple\">Product title must be at least four characters!</div> -->\n        \n        <div class=\"form-group row\">\n            <label for=\"qty\">Qty</label>\n            <input \n            class=\"form-control\"\n            type=\"number\" \n            name=\"qty\" \n            [(ngModel)]=\"product.qty\"\n            #qty=\"ngModel\"\n            />\n          </div>\n\n        <div class=\"form-group row\">\n          <label for=\"price\">Price</label>\n          <input \n          class=\"form-control\"\n          type=\"number\" \n          name=\"price\" \n          [(ngModel)]=\"product.price\"\n          #price=\"ngModel\"\n          />\n        </div>\n\n        <button type=\"button\" class=\"button is-light\" (click)=\"reset()\" >RESET</button>\n        <button type=\"button\" class=\"button is-success\" (click)=\"editProduct(product)\" [disabled]=\"formData.invalid\">UPDATE</button>\n        <!-- <button class=\"button is-light\" [routerLink]=\"['/products']\">RESET</button> -->\n        <!-- <button type=\"submit\" class=\"button is-success\" [disabled]=\"formData.invalid\">UPDATE</button> -->\n      \n  \n      </fieldset>\n  \n    </div>\n  \n  </form>"
 
 /***/ }),
 
@@ -340,8 +347,10 @@ var ProductEditComponent = /** @class */ (function () {
         this.errors = {};
     }
     ProductEditComponent.prototype.ngOnInit = function () {
-        this.product = { title: "", price: "", imagePath: "" };
+        this.product = { name: "", qty: "", price: "" };
         this.getProduct();
+        this.produtcSave = this.product;
+        console.log("saved prod", this.produtcSave);
     };
     ProductEditComponent.prototype.getProduct = function () {
         var _this = this;
@@ -353,6 +362,7 @@ var ProductEditComponent = /** @class */ (function () {
     };
     ProductEditComponent.prototype.editProduct = function (product) {
         var _this = this;
+        console.log('product in edit:', product);
         this._productService.editProduct(product, function (res) {
             if (res.errors) {
                 console.log('Something went wrong when saving product');
@@ -366,12 +376,12 @@ var ProductEditComponent = /** @class */ (function () {
             }
         });
     };
-    ProductEditComponent.prototype.deleteProduct = function (id) {
-        var _this = this;
-        this._productService.deleteProduct((id), function (res) {
-            console.log('This called delete product!');
-            _this._router.navigate(['/products']);
-        });
+    ProductEditComponent.prototype.reset = function () {
+        this.getProduct();
+        // this.product = this.produtcSave;
+        console.log('product in reset edit:', this.product);
+        this._router.navigate(['/products/edit/'] + this.product['_id']);
+        // this._router.navigate(['/products/edit/'] + this.product['_id']);
     };
     ProductEditComponent = __decorate([
         core_1.Component({
@@ -450,7 +460,7 @@ module.exports = ""
 /***/ "./src/app/product/product-list/product-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"btn-group\" role=\"group\" aria-label=\"Basic example\">\n    <button type=\"button\" class=\"button is-light\" [routerLink]=\"['/']\">Home</button>\n    <button type=\"button\" class=\"button is-light\" [routerLink]=\"['/products/new']\">Product Creation</button>\n</div> \n\n<div class=\"box\">\n    <article class=\"media\">\n\n      <div class=\"media-content\">\n        <div class=\"content\">\n          <strong>Product List</strong> \n          <br>\n          <div id=\"scroll\">\n              <table class=\"table table-hover\" align=\"left\">\n                <tbody>\n                  <tr *ngFor=\"let product of products\" class=\"d-flex\">\n                    <td>\n                      <figure class=\"media-left\">\n                          <p class=\"image is-128x128\">\n                            <img src=\"{{product['imagePath']}}\">\n                          </p>\n                        </figure>\n                    </td>\n                    <td class=\"col-6\">{{ product['title'] }}</td>\n                    <td class=\"col-4\">{{ product['price'] | number : '1.2-2' }}</td>\n                    <td class=\"col-3\"><button mat-button [routerLink]=\"['/products/edit', product['_id'] ]\" class=\"button is-warning\">Edit</button></td>\n                    <td class=\"col-3\"><button mat-button (click)=\"deleteProduct(product['_id'])\" class=\"button is-danger\">Delete</button></td>\n                    <!-- <td class=\"col-3\"><button mat-button (click)=\"openDialog(player)\" class=\"button is-danger\">Delete</button></td> -->\n                  </tr>\n                </tbody>\n              </table> \n            </div>\n              \n    \n        </div>\n  \n      </div>\n    </article>\n  </div>"
+module.exports = "<div class=\"btn-group\" role=\"group\" aria-label=\"Basic example\">\n    <button type=\"button\" class=\"button is-light\" [routerLink]=\"['/products/new']\">Add New Product</button>\n</div> \n\n<div class=\"box\">\n    <article class=\"media\">\n\n      <div class=\"media-content\">\n        <div class=\"content\">\n          <strong>Product List</strong> \n          <br>\n          <div id=\"scroll\">\n              <table class=\"table table-hover\" align=\"left\">\n              <thead>\n                  <tr class=\"table-primary d-flex\">\n                    <th class=\"col-3\">Id</th>\n                    <th class=\"col-3\">Name</th>\n                    <th class=\"col-3\">Qty</th>\n                    <th class=\"col-3\">Price</th>\n                    <th class=\"col-6\">Actions</th>\n                  </tr>\n                </thead>\n                <tbody>\n                  <tr *ngFor=\"let product of products\" class=\"d-flex\">\n                    <td class=\"col-3\">{{ product['_id'] }}</td>\n                    <td class=\"col-3\">{{ product['name'] }}</td>\n                    <td class=\"col-3\">{{ product['qty'] }}</td>\n                    <td class=\"col-3\">{{ product['price'] | number : '1.2-2' }}</td>\n                    <td class=\"col-3\"><button type=\"button\" [routerLink]=\"['/products/edit/', product['_id'] ]\" class=\"button is-warning\">Edit</button></td>\n                    <td class=\"col-3\"><button type=\"button\" [routerLink]=\"['/products/', product['_id'] ]\"  class=\"button is-danger\">Details</button></td>\n                  </tr>\n                </tbody>\n              </table> \n            </div>\n              \n    \n        </div>\n  \n      </div>\n    </article>\n  </div>"
 
 /***/ }),
 
@@ -508,6 +518,81 @@ exports.ProductListComponent = ProductListComponent;
 
 /***/ }),
 
+/***/ "./src/app/product/product-show/product-show.component.css":
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/product/product-show/product-show.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<form (submit)=\"deleteProduct(product._id)\" #formData=\"ngForm\" id=\"showForm\">\n  <div class=\"box\">\n    <article class=\"media\">\n\n      <div class=\"media-content\">\n        <div class=\"content\">\n          <strong>Product List</strong> \n          <br>\n\n          {{ error | json }}\n          <div class=\"errors\">\n            <p *ngIf=\"errors.title\" >  {{ errors.name.message }} </p>     \n          </div>\n\n          <div class=\"field\">\n            <label class=\"label level-left\">Name</label>\n            <div  class=\"level-item\">\n              <p> {{ product.name}} </p>\n            </div>\n          </div>\n          \n          <div class=\"field\">\n            <label class=\"label  level-left\">Qty</label>\n            <div  class=\"level-item\">\n              <p> {{ product.qty}} </p>\n            </div>\n          </div>\n\n          <div class=\"field\">\n            <label class=\"label\">Price</label>\n            <div  class=\"level-item\">\n              <p> {{ product.price}} </p>\n            </div>\n          </div>        \n    \n          <button type=\"button\" class=\"button is-light\" [routerLink]=\"['/products']\">Back</button>\n          <button type=\"submit\" class=\"button is-danger\" [disabled]=\"product.qty > 0\">Delete</button>\n\n        </div>\n  \n      </div>\n  \n     \n    </article>\n\n\n\n</div>\n</form>"
+
+/***/ }),
+
+/***/ "./src/app/product/product-show/product-show.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var product_service_1 = __webpack_require__("./src/app/product/product.service.ts");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
+var ProductShowComponent = /** @class */ (function () {
+    function ProductShowComponent(_productService, _router, _route) {
+        this._productService = _productService;
+        this._router = _router;
+        this._route = _route;
+        this.errors = {};
+    }
+    ProductShowComponent.prototype.ngOnInit = function () {
+        this.product = { name: "", qty: "", price: "" };
+        this.getProduct();
+    };
+    ProductShowComponent.prototype.getProduct = function () {
+        var _this = this;
+        this._route.paramMap.subscribe(function (params) {
+            _this._productService.getProductById(params.get('id'), function (res) {
+                _this.product = res;
+            });
+        });
+    };
+    ProductShowComponent.prototype.deleteProduct = function (id) {
+        var _this = this;
+        this._productService.deleteProduct((id), function (res) {
+            console.log('This called delete product!');
+            _this._router.navigate(['/products']);
+        });
+    };
+    ProductShowComponent = __decorate([
+        core_1.Component({
+            selector: 'app-product-show',
+            template: __webpack_require__("./src/app/product/product-show/product-show.component.html"),
+            styles: [__webpack_require__("./src/app/product/product-show/product-show.component.css")]
+        }),
+        __metadata("design:paramtypes", [product_service_1.ProductService,
+            router_1.Router,
+            router_1.ActivatedRoute])
+    ], ProductShowComponent);
+    return ProductShowComponent;
+}());
+exports.ProductShowComponent = ProductShowComponent;
+
+
+/***/ }),
+
 /***/ "./src/app/product/product.service.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -526,16 +611,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/esm5/http.js");
 var ProductService = /** @class */ (function () {
-    // user;
-    // player: Player;
     function ProductService(_http) {
         this._http = _http;
     }
-    // login(user, callback) {
-    //   this.user = user;
-    //   console.log('LOGIN success: ', this.user);
-    //   callback(this.user);
-    // }
     ProductService.prototype.getProductsList = function (products) {
         this._http.get('/products/list').subscribe(function (res) {
             console.log('SUCCESS in getting products: ', res.json());
@@ -571,6 +649,14 @@ var ProductService = /** @class */ (function () {
     ProductService.prototype.getProductById = function (id, callback) {
         this._http.get('/products/' + id).subscribe(function (res) {
             console.log('SUCCESS getting ProductByID: ', res.json());
+            callback(res.json());
+        }, function (err) {
+            console.log('ERROR getting ProductByID: ', err);
+        });
+    };
+    ProductService.prototype.getLast = function (callback) {
+        this._http.get('/products/nId').subscribe(function (res) {
+            console.log('SUCCESS getting last product: ', res.json());
             callback(res.json());
         }, function (err) {
             console.log('ERROR getting ProductByID: ', err);

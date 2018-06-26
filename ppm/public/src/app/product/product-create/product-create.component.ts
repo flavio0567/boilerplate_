@@ -9,6 +9,7 @@ import { ProductService } from '../product.service';
 })
 export class ProductCreateComponent implements OnInit {
   newProduct: any;
+  errors: any;
 
   constructor(      
     private _productService: ProductService, 
@@ -17,12 +18,19 @@ export class ProductCreateComponent implements OnInit {
 ) { }
 
   ngOnInit() {
-    this.newProduct = { title: "", price: "", imagePath: "" };
+    this.newProduct = { name: "", qty: "", price: "", count: "" };
   }
 
-  addProduct() {
+  addProduct(product) {
+    console.log('product:' , product);
     this._productService.newProduct(this.newProduct, (res) => {
-      this._router.navigate(['/products', res]);
+      if(res.errors) {
+        console.log('Something went wrong when saving product', res.errors);
+        this.errors = res.errors;
+        this._router.navigate(['/products/new']);
+      } else {
+        this._router.navigate(['/products', res]);
+      }
     });
   };
 
