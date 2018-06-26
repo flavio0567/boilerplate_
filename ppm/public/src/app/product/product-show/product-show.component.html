@@ -4,10 +4,9 @@
 
       <div class="media-content">
         <div class="content">
-          <strong>Product List</strong> 
+          <div class="title is-4">Product Detail</div> 
           <br>
-
-          {{ error | json }}
+          <!-- {{ errors | json }} -->
           <div class="errors">
             <p *ngIf="errors.title" >  {{ errors.name.message }} </p>     
           </div>
@@ -32,18 +31,16 @@
               <p> {{ product.price}} </p>
             </div>
           </div>        
-    
-          <button type="button" class="button is-light" [routerLink]="['/products']">Back</button>
-          <button type="submit" class="button is-danger" [disabled]="product.qty > 0">Delete</button>
-
         </div>
-  
       </div>
-  
-     
     </article>
-
-
-
-</div>
+    <nav class="level">
+      <div class="level-left"> 
+      </div>
+      <div class="level-item">
+        <button type="button" class="button is-light" [routerLink]="['/products']">Back</button>
+        <button type="submit" class="button is-danger" [disabled]="product.qty > 0">Delete</button>
+      </div> 
+    </nav>
+  </div>
 </form>

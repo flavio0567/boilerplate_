@@ -51,13 +51,15 @@
           />
           <!-- <div *ngIf="!price.valid" class="red">*Price {{ newProduct.price }} must be greater than or equal to 0!</div> -->
     </div>
-
-    <br>
   <!-- </fieldset> -->
+  <nav class="level">
+      <div class="level-left"> 
+      </div>
+      <div class="level-item">
+        <button class="button is-light" [routerLink]="['/products']">RESET</button>
+        <button class="button is-success" type="submit" [disabled]="formData.invalid">CREATE</button>
+      </div> 
+    </nav>
   </div>
-
-  <button class="button is-light" [routerLink]="['/products']">RESET</button>
-  <button class="button is-success" type="submit" [disabled]="formData.invalid">CREATE</button>
- 
 </form>
 
